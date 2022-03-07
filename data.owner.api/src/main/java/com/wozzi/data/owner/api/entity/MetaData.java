@@ -11,7 +11,7 @@ import javax.persistence.*;
 public class MetaData {
 
     @GenericGenerator(
-            name = "metadataSequenceGenerator",
+            name = "metaDataSequenceGenerator",
             strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
             parameters = {
                     @org.hibernate.annotations.Parameter(name = "sequence_name", value = "metadata_sequence"),
@@ -20,18 +20,19 @@ public class MetaData {
             }
     )
     @Id
-    @GeneratedValue(generator = "metadataSequenceGenerator")
+    @GeneratedValue(generator = "dataOwnerSequenceGenerator")
     private Long id;
     private Long parentId;
-    private Long metaDataTypeId;
 
-    @OneToOne(
-            fetch = FetchType.LAZY
+    @ManyToOne(
+            cascade = CascadeType.ALL
     )
     @JoinColumn(
-            name = "id",
-            referencedColumnName = "meta_data_type_id"
+            name = "meta_data_type_Id",
+            referencedColumnName = "id"
     )
     private MetaDataType metaDataType;
 
+    @OneToOne(mappedBy = "metaData")
+    private DataOwner dataOwner;
 }

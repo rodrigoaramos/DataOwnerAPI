@@ -4,10 +4,7 @@ import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Data
@@ -15,7 +12,7 @@ import javax.persistence.Table;
 public class DataOwner {
 
     @GenericGenerator(
-            name = "dataownerSequenceGenerator",
+            name = "dataOwnerSequenceGenerator",
             strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
             parameters = {
                     @Parameter(name = "sequence_name", value = "dataowner_sequence"),
@@ -24,8 +21,15 @@ public class DataOwner {
             }
     )
     @Id
-    @GeneratedValue(generator = "dataownerSequenceGenerator")
+    @GeneratedValue(generator = "dataOwnerSequenceGenerator")
     private Long id;
     private String name;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinTable(name = "data_of_holder",
+            joinColumns =
+                    { @JoinColumn(name = "data_owner_id", referencedColumnName = "id") },
+            inverseJoinColumns =
+                    { @JoinColumn(name = "meta_data_id", referencedColumnName = "id") })
+    private MetaData metaData;
 }
