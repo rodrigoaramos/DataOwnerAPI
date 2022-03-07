@@ -1,0 +1,33 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/dbdatamgr?stringtype=unspecified
+    username: postgres
+    password: prodan46
+    hikari:
+      connection-timeout: 20000
+      minimum-idle: 5
+      maximum-pool-size: 100
+      idle-timeout: 160000
+      max-lifetime: 180000
+      auto-commit: true
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        id:
+          new_generator_mappings: false
+        format_sql: true
+        temp:
+          use_jdbc_metadata_defaults: false
+        default_schema: metadata
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+  flyway:
+    url: ${spring.datasource.url}
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+    validate-on-migrate: false
+    baseline-on-migrate: true
+    schemas: metadata
